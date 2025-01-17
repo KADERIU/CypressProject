@@ -16,12 +16,16 @@ module.exports = defineConfig({
     viewportHeight: 870,
 
     setupNodeEvents(on, config) {
-      // Implémenter les écouteurs d'événements Node.js si nécessaire
-      // Exemple : ajout d'un event listener
+      // Charger le plugin cypress-mochawesome-reporter
+      require('cypress-mochawesome-reporter/plugin')(on);
+
+      // Implémenter d'autres écouteurs d'événements Node.js si nécessaire
       on('before:browser:launch', (browser = {}, launchOptions) => {
         console.log(`Launching browser: ${browser.name}`);
         return launchOptions;
       });
+
+      return config; // Retourner la configuration modifiée
     },
   },
 
@@ -29,13 +33,20 @@ module.exports = defineConfig({
     url: "https://www.campusfrance.org/fr/user/register",
   },
 
+  // Dossier pour les vidéos et les captures d'écran
   video: true,
   screenshotsFolder: "cypress/screenshots",
   videosFolder: "cypress/videos",
 
-  reporter: "spec",
+  // Configuration du reporter
+  reporter: "cypress-mochawesome-reporter",
   reporterOptions: {
-    mochaFile: "cypress/results/results-[hash].xml",
-    toConsole: true,
+    reportDir: "cypress/reports",
+    overwrite: false,
+    html: true,
+    json: true,
+    charts: true, // Ajoute des graphiques au rapport HTML
+    reportFilename: "mochawesome-[datetime].html", // Format de nom pour le fichier HTML
+    timestamp: "mmddyyyy_HHMMss", // Format pour les horodatages dans les noms de fichier
   },
 });
