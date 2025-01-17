@@ -17,6 +17,11 @@ module.exports = defineConfig({
 
     setupNodeEvents(on, config) {
       // Implémenter les écouteurs d'événements Node.js si nécessaire
+      // Exemple : ajout d'un event listener
+      on('before:browser:launch', (browser = {}, launchOptions) => {
+        console.log(`Launching browser: ${browser.name}`);
+        return launchOptions;
+      });
     },
   },
 
